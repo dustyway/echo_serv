@@ -26,7 +26,7 @@ void print_address(const addrinfo* peer_address) {
               << " " << service_buffer << "\n";
 }
 
-SOCKET create_and_connect(const addrinfo* peer_address) {
+SOCKET socket_from_address(const addrinfo* peer_address) {
     SOCKET socket_peer = socket(peer_address->ai_family,
                                 peer_address->ai_socktype,
                                 peer_address->ai_protocol);
@@ -36,12 +36,12 @@ SOCKET create_and_connect(const addrinfo* peer_address) {
         return socket_peer;
     }
 
-    if (connect(socket_peer, peer_address->ai_addr,
-                peer_address->ai_addrlen) != 0) {
-        std::cerr << "connect() failed. (" << GETSOCKETERRNO() << ")\n";
-        CLOSESOCKET(socket_peer);
-        return -1;
-                }
+    // if (connect(socket_peer, peer_address->ai_addr,
+    //             peer_address->ai_addrlen) != 0) {
+    //     std::cerr << "connect() failed. (" << GETSOCKETERRNO() << ")\n";
+    //     CLOSESOCKET(socket_peer);
+    //     return -1;
+    // }
 
     return socket_peer;
 }

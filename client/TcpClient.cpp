@@ -1,7 +1,5 @@
 #include "TcpClient.hpp"
 
-#include <cstring>
-
 TcpClient::TcpClient(const std::string& hostname, const std::string& port)
         : _hostname(hostname), _port(port), _peer_address(), _socket_peer()
 {
@@ -10,18 +8,6 @@ TcpClient::TcpClient(const std::string& hostname, const std::string& port)
         throw std::runtime_error("Failed to configure address.");
     }
     print_address(_peer_address);
-
-    std::cout << "Creating socket...\n";
-    std::cout << "Connecting...\n";
-
-    _socket_peer = create_and_connect(_peer_address);
-    freeaddrinfo(_peer_address);
-
-    if (!ISVALIDSOCKET(_socket_peer)) {
-        throw std::runtime_error("Failed to connect to socket.");
-    }
-
-    std::cout << "Connected.\n";
 }
 
 TcpClient::~TcpClient()
@@ -29,6 +15,26 @@ TcpClient::~TcpClient()
     std::cout << "Closing socket...\n";
     CLOSESOCKET(_socket_peer);
     std::cout << "Finished.\n";
+}
+
+void TcpClient::init()
+{
+
+    std::cout << "Creating socket...\n";
+    _socket_peer = socket_from_address(_peer_address);
+    freeaddrinfo(_peer_address);
+
+    std::cout << "Connecting...\n";
+    if (connect(_socket_peer, _peer_address->ai_addr,
+                _peer_address->ai_addrlen) != 0) {
+        std::cerr << "connect() failed. (" << GETSOCKETERRNO() << ")\n";
+        CLOSESOCKET(_socket_peer);
+        throw std::runtime_error("Failed to connect to socket.");
+                }
+    if (!ISVALIDSOCKET(_socket_peer)) {
+        throw std::runtime_error("Failed to connect to socket.");
+    }
+    std::cout << "Connected.\n";
 }
 
 bool TcpClient::stdin_to_peer() const
@@ -48,7 +54,7 @@ bool TcpClient::stdin_to_peer() const
     return true;
 }
 
-void TcpClient::run_loop()
+void TcpClient::run_loop() const
 {
     fd_set reads;
     timeval timeout = {};

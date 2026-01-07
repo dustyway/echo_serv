@@ -4,6 +4,7 @@
 #include <iostream>
 #include <sys/select.h>
 #include <unistd.h>
+#include <cstring>
 #include "lib_echo.hpp"
 
 class TcpClient
@@ -11,7 +12,8 @@ class TcpClient
 public:
     TcpClient(const std::string &hostname, const std::string &port);
     ~TcpClient();
-    void run_loop();
+    void init();
+    void run_loop() const;
 
 private:
     TcpClient(const TcpClient&);

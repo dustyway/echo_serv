@@ -18,12 +18,11 @@
 static const int BUFFER_SIZE = 4096;
 static const int ADDRESS_BUFFER_SIZE = 100;
 
-bool parse_port(const std::string& s, unsigned int& port);
 bool configure_address(const std::string& hostname,
                               const std::string& port,
-                              struct addrinfo** peer_address);
+                              addrinfo** peer_address);
 void print_address(const addrinfo* peer_address);
-SOCKET create_and_connect(const addrinfo* peer_address);
+SOCKET socket_from_address(const addrinfo* peer_address);
 bool handle_socket_read(SOCKET socket_peer);
 
 #endif

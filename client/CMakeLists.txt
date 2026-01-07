@@ -1,6 +1,7 @@
 set(CLIENT_SOURCES
         TcpClient.cpp
-    main.cpp)
+        main.cpp
+)
 set(CLIENT_INCLUDES
     "./")
 

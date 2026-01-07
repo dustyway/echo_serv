@@ -1,5 +1,7 @@
 set(SERVER_SOURCES
-        main.cpp)
+        EchoServer.cpp
+        main.cpp
+)
 set(SERVER_INCLUDES
         "./")
 
