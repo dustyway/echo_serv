@@ -1,8 +1,9 @@
-#include "EchoClient.hpp"
+#include "TcpClient.hpp"
 
-EchoClient::EchoClient(const std::string& hostname, const std::string& port)
-        : _running(false), _hostname(hostname),
-          _port(port), _peer_address(), _socket_peer()
+#include <cstring>
+
+TcpClient::TcpClient(const std::string& hostname, const std::string& port)
+        : _hostname(hostname), _port(port), _peer_address(), _socket_peer()
 {
     std::cout << "Configuring remote address...\n";
     if (!configure_address(hostname, port, &_peer_address)) {
@@ -23,20 +24,36 @@ EchoClient::EchoClient(const std::string& hostname, const std::string& port)
     std::cout << "Connected.\n";
 }
 
-EchoClient::~EchoClient()
+TcpClient::~TcpClient()
 {
     std::cout << "Closing socket...\n";
     CLOSESOCKET(_socket_peer);
     std::cout << "Finished.\n";
 }
 
-void EchoClient::run_loop()
+bool TcpClient::stdin_to_peer() const
+{
+    std::string line;
+
+    if (!std::getline(std::cin, line)) {
+        return false;
+    }
+    line += "\n";
+
+    std::cout << "Sending: " << line << std::flush;
+
+    int bytes_sent = send(_socket_peer, line.c_str(), line.length(), 0);
+    std::cout << "Sent " << bytes_sent << " bytes.\n";
+
+    return true;
+}
+
+void TcpClient::run_loop()
 {
     fd_set reads;
     timeval timeout = {};
-    _running = true;
 
-    while(_running) {
+    while(true) {
         FD_ZERO(&reads);
         FD_SET(_socket_peer, &reads);
         FD_SET(0, &reads);
@@ -45,21 +62,21 @@ void EchoClient::run_loop()
         timeout.tv_usec = 100000;
 
         if (select(_socket_peer + 1, &reads, 0, 0, &timeout) < 0) {
-            std::cerr << "select() failed. (" << GETSOCKETERRNO() << ")\n";
-            break;
+            throw std::runtime_error("select() failed." + std::string(strerror(GETSOCKETERRNO())));
         }
 
         if (FD_ISSET(_socket_peer, &reads)) {
             if (!handle_socket_read(_socket_peer)) {
-                _running = false;
+                break;
             }
         }
 
-        if (_running && FD_ISSET(0, &reads)) {
-            if (!handle_stdin_read(_socket_peer)) {
-                _running = false;
+        if (FD_ISSET(0, &reads)) {
+            if (!stdin_to_peer()) {
+                break;
             }
         }
     }
 }
+
 

@@ -1,23 +1,5 @@
 #include "lib_echo.hpp"
 
-#include <sstream>
-
-// test if string is an integer in range (0,65535]
-bool parse_port(const std::string& s, unsigned int& port) {
-    if (s.empty()) return false;
-
-    std::istringstream iss(s);
-    unsigned int val;
-    char remaining;
-
-    if (!(iss >> val)) return false;
-    if (iss >> remaining) return false;
-    if (val > 65535) return false;
-
-    port = val;
-    return true;
-}
-
 bool configure_address(const std::string& hostname,
                               const std::string& port,
                               addrinfo** peer_address) {
@@ -81,19 +63,3 @@ bool handle_socket_read(SOCKET socket_peer) {
 }
 
 
-bool handle_stdin_read(SOCKET socket_peer) {
-    std::string line;
-
-    if (!std::getline(std::cin, line)) {
-        return false;
-    }
-
-    line += "\n";
-
-    std::cout << "Sending: " << line;
-
-    int bytes_sent = send(socket_peer, line.c_str(), line.length(), 0);
-    std::cout << "Sent " << bytes_sent << " bytes.\n";
-
-    return true;
-}

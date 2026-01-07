@@ -6,17 +6,17 @@
 #include <unistd.h>
 #include "lib_echo.hpp"
 
-class EchoClient
+class TcpClient
 {
 public:
-    EchoClient(const std::string &hostname, const std::string &port);
-    ~EchoClient();
+    TcpClient(const std::string &hostname, const std::string &port);
+    ~TcpClient();
     void run_loop();
 
 private:
-    EchoClient(const EchoClient&);
-    EchoClient& operator=(const EchoClient&);
-    bool _running;
+    TcpClient(const TcpClient&);
+    TcpClient& operator=(const TcpClient&);
+    bool stdin_to_peer() const;
     std::string _hostname;
     std::string _port;
     addrinfo* _peer_address;

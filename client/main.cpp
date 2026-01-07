@@ -1,4 +1,4 @@
-#include "EchoClient.hpp"
+#include "TcpClient.hpp"
 
 int main(int argc, char* argv[]) {
     if (argc < 3 ) {
@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    EchoClient client(argv[1], argv[2]);;
+    TcpClient client(argv[1], argv[2]);;
 
     std::cout << "To send data, enter text followed by enter.\n";
     client.run_loop();

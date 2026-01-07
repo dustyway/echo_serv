@@ -1,5 +1,5 @@
 set(CLIENT_SOURCES
-    EchoClient.cpp
+        TcpClient.cpp
     main.cpp)
 set(CLIENT_INCLUDES
     "./")

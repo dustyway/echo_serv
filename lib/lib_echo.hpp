@@ -25,6 +25,5 @@ bool configure_address(const std::string& hostname,
 void print_address(const addrinfo* peer_address);
 SOCKET create_and_connect(const addrinfo* peer_address);
 bool handle_socket_read(SOCKET socket_peer);
-bool handle_stdin_read(SOCKET socket_peer);
 
 #endif

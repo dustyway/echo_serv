@@ -6,8 +6,10 @@ set(CMAKE_CXX_STANDARD          98)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 set(LIBRARY_NAME lib_echo_serv)
-set(CLIENT_NAME echo_client)
+set(CLIENT_NAME client)
 set(SERVER_NAME echo_server)
 
 add_subdirectory(lib)
