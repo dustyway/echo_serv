@@ -1,5 +1,23 @@
 #include "lib_echo.hpp"
 
+#include <sstream>
+
+// test if string is an integer in range (0,65535]
+bool parse_port(const std::string& s, unsigned int& port) {
+    if (s.empty()) return false;
+
+    std::istringstream iss(s);
+    unsigned int val;
+    char remaining;
+
+    if (!(iss >> val)) return false;
+    if (iss >> remaining) return false;
+    if (val > 65535) return false;
+
+    port = val;
+    return true;
+}
+
 bool configure_address(const std::string& hostname,
                               const std::string& port,
                               addrinfo** peer_address) {

@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 
 set(LIBRARY_NAME lib_echo_serv)
-set(CLIENT_NAME client)
-set(SERVER_NAME echo_serv)
+set(CLIENT_NAME echo_client)
+set(SERVER_NAME echo_server)
 
 add_subdirectory(lib)
 add_subdirectory(client)
-#add_subdirectory(server)
+add_subdirectory(server)
 
 

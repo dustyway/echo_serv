@@ -1,5 +1,6 @@
 set(CLIENT_SOURCES
-    "main.cpp")
+    EchoClient.cpp
+    main.cpp)
 set(CLIENT_INCLUDES
     "./")
 

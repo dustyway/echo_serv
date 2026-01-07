@@ -18,6 +18,7 @@
 static const int BUFFER_SIZE = 4096;
 static const int ADDRESS_BUFFER_SIZE = 100;
 
+bool parse_port(const std::string& s, unsigned int& port);
 bool configure_address(const std::string& hostname,
                               const std::string& port,
                               struct addrinfo** peer_address);
