@@ -8,7 +8,9 @@ int main(int argc, char* argv[]) {
 
     EchoServer server(argv[1]);
 
-    // server.run_loop();
+    for (;;) {
+        HandleEvents
+    }
 
     return 0;
 }
