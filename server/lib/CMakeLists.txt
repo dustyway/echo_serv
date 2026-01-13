@@ -1,10 +1,10 @@
 set(LIBRARY_SOURCES
-        "lib_echo.cpp")
+        "EchoServer.cpp")
 set(LIBRARY_HEADERS
-        "lib_echo.hpp")
+        "EchoServer.hpp")
 
 add_library(${LIBRARY_NAME} STATIC
         ${LIBRARY_SOURCES}
         ${LIBRARY_HEADERS})
 target_include_directories(${LIBRARY_NAME} PUBLIC
-        "./")
+        ${CMAKE_CURRENT_SOURCE_DIR})

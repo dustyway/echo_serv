@@ -1,10 +1,11 @@
+set (LIBRARY_NAME lib_echoserv)
+add_subdirectory(lib)
+
 set(SERVER_SOURCES
-        EchoServer.cpp
         main.cpp
 )
-set(SERVER_INCLUDES
-        "./")
+
+set(SERVER_NAME echo_server)
 
 add_executable(${SERVER_NAME} ${SERVER_SOURCES})
-target_include_directories(${SERVER_NAME} PUBLIC ${SERVER_INCLUDES})
 target_link_libraries(${SERVER_NAME} PUBLIC ${LIBRARY_NAME})

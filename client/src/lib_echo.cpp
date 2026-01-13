@@ -1,8 +1,8 @@
 #include "lib_echo.hpp"
 
 bool configure_address(const std::string& hostname,
-                              const std::string& port,
-                              addrinfo** peer_address) {
+                       const std::string& port,
+                       addrinfo** peer_address) {
     addrinfo hints = addrinfo();
     hints.ai_socktype = SOCK_STREAM;
 
