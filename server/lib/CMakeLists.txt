@@ -1,10 +1,13 @@
 set(LIBRARY_SOURCES
-        "EchoServer.cpp")
-set(LIBRARY_HEADERS
-        "EchoServer.hpp")
+        Acceptor.cpp
+        ConnectionHandler.cpp
+        Reactor.cpp
+        SignalHandler.cpp
+        Server.cpp
+)
 
 add_library(${LIBRARY_NAME} STATIC
         ${LIBRARY_SOURCES}
-        ${LIBRARY_HEADERS})
-target_include_directories(${LIBRARY_NAME} PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR})
+)
+
+target_include_directories(${LIBRARY_NAME} PUBLIC include)

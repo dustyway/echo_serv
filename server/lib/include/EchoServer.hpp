@@ -44,7 +44,7 @@ private:
     static int _signal_pipe[2];  // Only static - for signal handler
     static void signal_handler(int sig);
 
-    bool _is_running;  // Non-static now
+    bool _is_running;
     std::string _port;
     std::vector<SOCKET> _clients;
     SOCKET _listenfd;

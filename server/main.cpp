@@ -1,13 +1,7 @@
-#include <iostream>
-#include "EchoServer.hpp"
+#include "Server.hpp"
 
 int main(int argc, char* argv[])
 {
-    if (argc < 2) {
-        std::cerr << "usage: echo_server port" << std::endl;
-        return 1;
-    }
-
-    EchoServer server(argv[1]);
+    Server server(argc > 1 ? argv[1] : "8080");
     return server.run();
 }

@@ -25,7 +25,6 @@ EchoServer::EchoServer(const std::string &port)
 {
 }
 
-
 EchoServer::~EchoServer()
 {
     std::cout << "\nCleaning up..." << std::endl;
@@ -64,13 +63,7 @@ void EchoServer::add_client(SOCKET fd)
 
 void EchoServer::remove_client(SOCKET fd)
 {
-    for (std::vector<SOCKET>::iterator it = _clients.begin();
-         it != _clients.end(); ++it) {
-        if (*it == fd) {
-            _clients.erase(it);
-            break;
-        }
-    }
+    _clients.erase(std::remove(_clients.begin(), _clients.end(), fd), _clients.end());
 }
 
 void EchoServer::close_if_valid(SOCKET fd)
