@@ -19,7 +19,6 @@ private:
     Server(const Server&);
     Server& operator=(const Server&);
 
-    std::string     _port;
     Reactor         _reactor;
     SignalHandler*  _signal_handler;
     Acceptor*       _acceptor;

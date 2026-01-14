@@ -1,9 +1,8 @@
 #include "Server.hpp"
 
 Server::Server(const std::string& port)
-    : _port(port)
-    , _signal_handler(NULL)
-    , _acceptor(NULL)
+    : _signal_handler(NULL)
+    , _acceptor(new Acceptor(_reactor, port))
 {
 }
 
@@ -24,7 +23,6 @@ int Server::run()
         return 1;
     }
 
-    _acceptor = new Acceptor(_reactor, _port);
     if (!_acceptor->open()) {
         return 1;
     }
