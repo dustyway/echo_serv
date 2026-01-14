@@ -68,11 +68,7 @@ void Acceptor::handle_read()
 
         int connfd = accept(_fd, (struct sockaddr*)&cliaddr, &clilen);
         if (connfd < 0) {
-            if (errno == EAGAIN || errno == EWOULDBLOCK) {
-                break;  // No more pending connections
-            }
-            perror("accept");
-            break;
+            break;  // No more pending connections or error
         }
 
         set_nonblocking(connfd);

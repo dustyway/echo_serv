@@ -19,20 +19,20 @@ void ConnectionHandler::handle_read()
     char buffer[BUFFER_SIZE];
     ssize_t n = read(_fd, buffer, sizeof(buffer));
 
-    if (n <= 0) {
-        if (n < 0 && errno != ECONNRESET) {
-            perror("read");
+    if (n > 0) {
+        // Echo: append to write buffer
+        _write_buffer.append(buffer, n);
+
+        // Enable write notifications if we have data to send
+        if (!_write_buffer.empty()) {
+            _reactor.modify_handler(this, EPOLLIN | EPOLLOUT);
         }
+    } else if (n == 0) {
+        // EOF - peer closed connection gracefully
         handle_close();
-        return;
-    }
-
-    // Echo: append to write buffer
-    _write_buffer.append(buffer, n);
-
-    // Enable write notifications if we have data to send
-    if (!_write_buffer.empty()) {
-        _reactor.modify_handler(this, EPOLLIN | EPOLLOUT);
+    } else {
+        // n < 0: error - close connection
+        handle_close();
     }
 }
 
@@ -45,19 +45,16 @@ void ConnectionHandler::handle_write()
 
     ssize_t n = write(_fd, _write_buffer.data(), _write_buffer.size());
 
-    if (n < 0) {
-        if (errno != EAGAIN && errno != EWOULDBLOCK) {
-            perror("write");
-            handle_close();
+    if (n > 0) {
+        _write_buffer.erase(0, n);
+
+        // Disable write notifications if buffer is empty
+        if (_write_buffer.empty()) {
+            _reactor.modify_handler(this, EPOLLIN);
         }
-        return;
-    }
-
-    _write_buffer.erase(0, n);
-
-    // Disable write notifications if buffer is empty
-    if (_write_buffer.empty()) {
-        _reactor.modify_handler(this, EPOLLIN);
+    } else {
+        // n <= 0: error - close connection
+        handle_close();
     }
 }
 
