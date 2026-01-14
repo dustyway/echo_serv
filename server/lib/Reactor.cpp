@@ -16,7 +16,7 @@ Reactor::~Reactor()
 
 bool Reactor::init()
 {
-    _epollfd = epoll_create1(EPOLL_CLOEXEC);
+    _epollfd = epoll_create(42);
     if (_epollfd < 0) {
         perror("epoll_create1");
         return false;
